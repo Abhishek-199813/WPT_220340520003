@@ -1,0 +1,107 @@
+<html>
+<body>
+
+<h1 style="color:crimson">Welcome to the book store</h1>
+
+
+<Br/><input type="number" id="bookid" name="bookid" placeholder="enter book id"/><br>
+<Br/><input type="text" id="bookname" name="bookname" placeholder="enter book name"/><br>
+<Br/><input type="number" id="price" name="bookprice" placeholder="enter book price"/>
+<br><br>
+
+<span id="msg"></span>
+
+<BR>
+
+<button id="update" name="update" value="Update" style="background-color:powderblue"> Update </button>
+
+
+
+
+
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script>//our scrip will come here 
+
+
+
+$(document).ready(()=>
+{
+console.log("page is loaded sucessfully");
+
+$("#bookid").blur(()=> 
+	{ 
+		console.log("blur event occured");
+		alert("jquery works");
+		let input={bookid:$('#bookid').val()}
+
+		let parametertothefunction={
+			data:input,
+			url:'http://localhost:8081/getdataofbook',
+			type:'get',
+			datatype:'json',
+			success:(datafromserver)=>{
+				console.log('data fetched sucessfully');
+				if(datafromserver.status===true)
+				{
+					$('#bookname').val(datafromserver.detail.bookname);
+					$('#price').val(datafromserver.detail.price);
+					$('#msg').text('book is successfully found');
+				}
+				else{
+					$('#msg').text('book is not found');
+				}
+			},
+			error:(errorfromserver)=>{
+				console.log('some error occured');
+			}
+		}
+
+		$.ajax(parametertothefunction);
+
+
+	});
+
+
+	$("#update").click(()=> 
+	{ 
+		console.log("click event occured");
+		alert("jquery works");
+		let input={bookid:$('#bookid').val(),price:$('#price').val()}
+
+		let parametertothefunction={
+			data:input,
+			url:'http://localhost:8081/updateprice',
+			type:'get',
+			datatype:'json',
+			success:(datafromserver)=>{
+				console.log('data fetched sucessfully');
+				if(datafromserver.status===true)
+				{
+					
+					$('#msg').text('book price is updated sucessfully');
+				}
+				else{
+					$('#msg').text('data is not found');
+				}
+			},
+			error:(errorfromserver)=>{
+				console.log('some error occured');
+			}
+		}
+
+		$.ajax(parametertothefunction);
+
+
+	});
+
+	
+});
+
+
+</script>
+
+
+</html>
